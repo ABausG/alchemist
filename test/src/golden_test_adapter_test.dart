@@ -293,7 +293,7 @@ void main() {
 
           final targetSize = tester.getSize(find.byKey(groupKey));
 
-          expect(tester.binding.window.physicalSize, targetSize);
+          expect(tester.view.physicalSize, targetSize);
         },
       );
 
@@ -310,7 +310,7 @@ void main() {
           widget: buildGroup(),
         );
 
-        expect(tester.binding.window.textScaleFactor, 2.0);
+        expect(tester.platformDispatcher.textScaleFactor, 2.0);
       });
 
       testWidgets(
@@ -421,12 +421,11 @@ void main() {
           ),
         );
 
-        final windowMediaQuery =
-            MediaQueryData.fromWindow(tester.binding.window);
+        final windowMediaQuery = MediaQueryData.fromView(tester.view);
 
-        expect(find.byType(MediaQuery), findsOneWidget);
+        expect(find.byType(MediaQuery), findsNWidgets(2));
         expect(
-          tester.widget(find.byType(MediaQuery)),
+          tester.widget(find.byType(MediaQuery).first),
           isA<MediaQuery>().having(
             (m) => m.data,
             'data',

@@ -231,8 +231,8 @@ class FlutterGoldenTestAdapter extends GoldenTestAdapter {
     required PumpWidget pumpWidget,
     required Widget widget,
   }) async {
-    tester.binding.window.devicePixelRatioTestValue = 1.0;
-    tester.binding.window.platformDispatcher.textScaleFactorTestValue =
+    tester.view.devicePixelRatio = 1.0;
+    tester.platformDispatcher.textScaleFactorTestValue =
         textScaleFactor;
 
     await pumpWidget(
@@ -279,7 +279,7 @@ class FlutterGoldenTestAdapter extends GoldenTestAdapter {
     final childSize = tester.getSize(find.byKey(childKey));
 
     await tester.binding.setSurfaceSize(childSize);
-    tester.binding.window.physicalSizeTestValue = childSize;
+    tester.view.physicalSize = childSize;
 
     await tester.pump();
   }
@@ -318,12 +318,12 @@ class FlutterGoldenTestAdapter extends GoldenTestAdapter {
 class FlutterGoldenTestWrapper extends StatelessWidget {
   /// {@macro _flutter_golden_test_wrapper}
   const FlutterGoldenTestWrapper({
-    Key? key,
+    super.key,
     this.globalConfigTheme,
     this.variantConfigTheme,
     this.obscureFont = false,
     required this.child,
-  }) : super(key: key);
+  });
 
   /// The theme provided by the global [AlchemistConfig], if any.
   ///
@@ -385,7 +385,7 @@ class FlutterGoldenTestWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     return MediaQuery(
       data: MediaQuery.maybeOf(context) ??
-          MediaQueryData.fromWindow(WidgetsBinding.instance.window),
+          MediaQueryData.fromView(View.of(context)),
       child: _LocalizationWrapper(
         child: Theme(
           data: _resolveThemeOf(context),
